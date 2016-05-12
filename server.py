@@ -29,16 +29,16 @@ class game():
     
     def __init__(self, data="", auth0=""):
         if not data:
-            print auth0
+            self.stations = 40
             self.init_time = int(time())
             self.auth = auth0
             self.auth_op = ["Basic "+base64.b64encode("admin:admin")]
             self.solve_time = -1
-            self.game_data, self.answer = self.generate_data(20)
+            self.game_data, self.answer = self.generate_data(self.stations)
             self.tries = []
             self.solved = False
-            self.max_tries = 4
-            self.timeout = 60*5 # in seconds
+            self.max_tries = self.stations-1
+            self.timeout = 60*30 # in seconds
         else:
             self.load(data)
             
@@ -69,7 +69,7 @@ class game():
     
     def process_auth(self, data):
         if data == "info":
-            return "Init time: {}\nCount of asks: {}\nMax allowed asks: {}\nAsks data: {}\nSolved: {}\nClosed: {}".format(self.init_time,len(self.tries),self.max_tries,self.tries,
+            return "Init time: {}\nStations: {}\nCount of asks: {}\nMax allowed asks: {}\nAsks data: {}\nSolved: {}\nClosed: {}".format(self.init_time,self.stations,len(self.tries),self.max_tries,self.tries,
                                                                                                                           self.solved, self.solve_time>-1)
         if data == "timeout":
             return str(self.init_time+self.timeout-int(time()))
@@ -104,6 +104,8 @@ class game():
         data = data.split('->')
         try:
             data_int = [int(data[0]), int(data[1])]
+            if data_int[0] > self.stations or data_int[1] > self.stations:
+                return "ERROR (station number exceeded)"
             self.tries += [data_int]
             return ("A" if (data_int in self.game_data) else "N")
         except:
@@ -111,7 +113,7 @@ class game():
 
     def process_nonauth(self, data):
         if data == "info":
-            return "Init time: {}\nCount of asks: {}\nMax allowed asks: {}\nClosed: {}".format(self.init_time,len(self.tries),self.max_tries, self.solve_time>-1)
+            return "Init time: {}\nStations: {}\nCount of asks: {}\nMax allowed asks: {}\nClosed: {}".format(self.init_time,self.stations,len(self.tries),self.max_tries, self.solve_time>-1)
         if data == "timeout":
             return str(self.init_time+self.timeout-int(time()))
         if data == "solved":
