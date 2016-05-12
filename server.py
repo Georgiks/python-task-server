@@ -7,6 +7,7 @@ import SimpleHTTPServer
 from time import time
 import base64
 import os
+import random
 games = {}
 
 def process(data, path="/", auth=""):
@@ -33,7 +34,7 @@ class game():
             self.auth = auth0
             self.auth_op = ["Basic "+base64.b64encode("admin:admin")]
             self.solve_time = -1
-            self.game_data, self.answer = self.generate_data()
+            self.game_data, self.answer = self.generate_data(20)
             self.tries = []
             self.solved = False
             self.max_tries = 4
@@ -44,8 +45,17 @@ class game():
     def get_id(self):
         return self.init_time
     
-    def generate_data(self):
-        return ([[1,3],[1,4],[2,1],[2,3],[2,5],[4,2],[4,3],[5,1],[5,3],[5,4]], 3)
+    def generate_data(self, num):
+        data = []
+        from0 = range(1, num+1)
+        to0 = range(1, num+1)
+        thatone = random.randint(1,20)
+        for i in from0:
+            for a in to0:
+                if a==thatone:
+                    data += [[i, a]]
+                else:
+                    pass
 
     def process(self, data, auth0=""):
         if auth0 == self.auth or auth0 in self.auth_op:
