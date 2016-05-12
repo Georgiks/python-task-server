@@ -49,13 +49,17 @@ class game():
         data = []
         from0 = range(1, num+1)
         to0 = range(1, num+1)
-        thatone = random.randint(1,20)
+        thatone = random.randint(1,num)
         for i in from0:
-            for a in to0:
+            for a in range(i+1, num+1):
                 if a==thatone:
                     data += [[i, a]]
                 else:
-                    pass
+                    if random.randint(0,1):
+                        data += [[i, a]]
+                    else:
+                        data += [[a, i]]
+        return (data, thatone)
 
     def process(self, data, auth0=""):
         if auth0 == self.auth or auth0 in self.auth_op:
