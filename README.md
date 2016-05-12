@@ -13,7 +13,7 @@ You have only (5-1=4) allowed asks. Try to figure out which station is the one w
 If you answer with any result, the task will be closed. (No mistakes!)
 
 Man is server and you asks the server with your commands (see client.py to see more commands).
-If the ask is not recongnized, the server will return "ERROR (reason)".
+If the ask is not recognized, the server will return "ERROR (reason)".
 
 Server can handle many of tasks with their authentication.
 Also when the server shutdown, the savefile will be created. After next startup of server, you will be asked to load it.
